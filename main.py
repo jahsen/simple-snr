@@ -1,5 +1,5 @@
 import pandas as pd
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 import re
 from tabulate import tabulate
 import argparse
@@ -21,11 +21,13 @@ def replace_text_in_html(input_file, output_file, replace_dict):
     for old_text, new_text in replace_dict.items():
         pattern = re.compile(re.escape(old_text), re.IGNORECASE)
         for tag in soup.find_all(string=True):
-            matches = re.findall(pattern, tag)
-            if matches:
-                count = len(matches)
-                replaced_count[old_text] += count
-                tag.replace_with(re.sub(pattern, new_text, tag))
+            if tag.parent.name not in ['style', 'script', 'head', 'title', 'meta', '[document]']:
+                if not isinstance(tag, Comment):
+                    matches = re.findall(pattern, tag)
+                    if matches:
+                        count = len(matches)
+                        replaced_count[old_text] += count
+                        tag.replace_with(re.sub(pattern, new_text, tag))
 
     with open(output_file, 'w', encoding='utf-8') as file:
         file.write(str(soup))
