@@ -5,5 +5,5 @@ pip install tabulate
 
 python main.py map.xlsx 0 1 in.html out.html
 
-#Sheet name should be "translations"
+#It always uses the first sheet automatically
 #Column 0 = A
