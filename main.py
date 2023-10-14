@@ -5,12 +5,10 @@ from tabulate import tabulate
 import argparse
 import os
 
-
-def excel_to_dict(file_path, sheet_name, col_search, col_replace):
-    df = pd.read_excel(file_path, sheet_name=sheet_name, header=None)
-    data_dict = {k: v for k, v in zip(df[int(col_search)], df[int(col_replace)]) if pd.notna(k) and pd.notna(v)}
+def excel_to_dict(file_path, col_search, col_replace):
+    df = pd.read_excel(file_path, sheet_name=0, header=None)
+    data_dict = {str(k).strip(): str(v).strip() for k, v in zip(df[int(col_search)], df[int(col_replace)]) if pd.notna(k) and pd.notna(v)}
     return data_dict
-
 
 def replace_text_in_html(input_file, output_file, replace_dict):
     replaced_count = {old_text: 0 for old_text in replace_dict.keys()}
@@ -29,7 +27,7 @@ def replace_text_in_html(input_file, output_file, replace_dict):
                 replaced_count[old_text] += count
                 tag.replace_with(re.sub(pattern, new_text, tag))
 
-    with open(output_file, 'w') as file:
+    with open(output_file, 'w', encoding='utf-8') as file:
         file.write(str(soup))
 
     return replaced_count
@@ -54,9 +52,8 @@ def print_replacements_summary(replaced_count):
 
 def main(in_xslx_file, col_search, col_replace, in_html_file, out_html_file):
     file_path = in_xslx_file  # Replace with your file path
-    sheet_name = "translations"  # Replace with your sheet name
 
-    data_dict = excel_to_dict(file_path, sheet_name, col_search, col_replace)
+    data_dict = excel_to_dict(file_path, col_search, col_replace)
     sorted_dict = sort_dict_by_key_length(data_dict)
 
     replaced_count = replace_text_in_html(in_html_file, out_html_file, sorted_dict)
