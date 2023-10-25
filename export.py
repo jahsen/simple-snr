@@ -1,6 +1,5 @@
 import pandas as pd
 from bs4 import BeautifulSoup, Comment
-import re
 from tabulate import tabulate
 import argparse
 import os
