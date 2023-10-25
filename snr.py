@@ -1,5 +1,6 @@
 import pandas as pd
 from bs4 import BeautifulSoup, Comment
+from html import unescape
 import re
 from tabulate import tabulate
 import argparse
@@ -29,8 +30,9 @@ def replace_text_in_html(input_file, output_file, replace_dict):
                         replaced_count[old_text] += count
                         tag.replace_with(re.sub(pattern, new_text, tag))
 
-    with open(output_file, 'w', encoding='utf-8') as file:
-        file.write(str(soup))
+    out_html = soup.encode(formatter="html")
+    with open(output_file, 'wb') as file:  # Changed to 'wb' for binary writing
+        file.write(out_html)
 
     return replaced_count
 
