@@ -13,7 +13,7 @@ def excel_to_dict(file_path, col_search, col_replace):
 def replace_text_in_html(input_file, output_file, replace_dict):
     replaced_count = {old_text: 0 for old_text in replace_dict.keys()}
 
-    with open(input_file, 'r') as file:
+    with open(input_file, 'r', encoding='utf-8') as file:
         html_content = file.read()
 
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -30,8 +30,8 @@ def replace_text_in_html(input_file, output_file, replace_dict):
                         tag.replace_with(re.sub(pattern, new_text, tag))
 
     out_html = soup.encode(formatter="html")
-    with open(output_file, 'wb') as file:  # Changed to 'wb' for binary writing
-        file.write(out_html)
+    with open(output_file, 'w', encoding='utf-8') as file:
+        file.write(out_html.decode('utf-8'))
 
     return replaced_count
 
