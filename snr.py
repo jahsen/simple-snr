@@ -4,6 +4,7 @@ import re
 from tabulate import tabulate
 import argparse
 import os
+import sys
 
 def excel_to_dict(file_path, col_search, col_replace):
     df = pd.read_excel(file_path, sheet_name=0, header=None)
@@ -66,6 +67,7 @@ def main(in_xslx_file, col_search, col_replace, in_html_file, out_html_file):
 
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
+    print(sys.getdefaultencoding())
 
     parser = argparse.ArgumentParser(description="Replace text in an HTML file based on XSLX table with translations")
 
