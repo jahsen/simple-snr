@@ -29,8 +29,8 @@ def replace_text_in_html(input_file, output_file, replace_dict):
                         replaced_count[old_text] += count
                         tag.replace_with(re.sub(pattern, new_text, tag))
 
-    out_html = soup.encode(formatter="html")
-    with open(output_file, 'w', encoding='utf-8') as file:
+    out_html = soup.encode(formatter="html", encoding='utf-8')  # Specify UTF-8 encoding
+    with open(output_file, 'w', encoding='utf-8') as file:  # Specify UTF-8 encoding
         file.write(out_html.decode('utf-8'))
 
     return replaced_count
